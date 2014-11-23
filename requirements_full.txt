@@ -1,0 +1,4 @@
+-r requirements.txt
+mysql-connector-python==1.2.2
+MySQL-python>=1.2.4
+pyodbc==3.0.7

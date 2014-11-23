@@ -1,0 +1,9 @@
+from hydro.topology_base import Topology
+
+
+class {{ topology_name }}Topology(Topology):  # TODO: rename this class and the entire file
+    def submit(self, params):
+        """
+        topology consists of several steps, defining one source stream or more, combining and transformations
+        """
+        pass

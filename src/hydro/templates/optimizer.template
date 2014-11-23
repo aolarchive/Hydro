@@ -1,0 +1,8 @@
+from hydro.base_classes import PlanObject
+from hydro.base_classes import OptimizerBase
+from hydro.exception import HydroException
+
+
+class {{ topology_name }}Optimizer(OptimizerBase):
+    def get_plan(self, data_type, params, conf=None):
+        raise HydroException('not implemented')
