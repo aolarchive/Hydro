@@ -25,14 +25,14 @@ Hydro is a free and open source Data API computation and serving framework, whic
 
 ## Hydro makes it easy to:
 
-1. consolidate into **one service** a logic of processing different types of inbound streams from [speed and batch](http://lambda-architecture.net/) layers.
-2. optimize data retrieval by performing various types of optimzation and transformation techniques during run time such as: 
-  * sampling.
-  * deciding on data access path (pre materialized / raw data).
-  * data streams operations:  lookuping, aggregations, computed columns and etc.
-  * resource allocation per user/query/client/QOS.
-3. create multi level caching.
-4. reuse and share business logic across different consumers and data streams. 
+1. Consolidate into **one service** a logic of processing different types of inbound streams from [speed and batch](http://lambda-architecture.net/) layers.
+2. Optimize data retrieval by performing various types of optimization and transformation techniques during run time such as:
+  * Sampling.
+  * Deciding on data access path (pre materialized / raw data).
+  * Data streams operations:  lookup-ing, aggregations, computed columns and etc.
+  * Resource allocation per user/query/client/QOS.
+3. Create multi level caching.
+4. Reuse and share business logic across different consumers and data streams.
 
 Hydro is built in a way that data/biz logic is separated from data extraction, in that way Hydro can define different data structures to extract data from **but** apply the same processing logic, once data is fetched.  
 
@@ -72,11 +72,11 @@ return aggregated
 **Query Engine**
 
 Query engine is responsible of connecting to data source and extract data from it.
-the query engine is utilizing the Optimzer in order to determine the access path, data structures and optimization logic in order to tap the stream.
+the query engine is utilizing the Optimizer in order to determine the access path, data structures and optimization logic in order to tap the stream.
 
-**Optimzer**
+**Optimizer**
 
-Optimzer is responsible of applying optimization techniques in order to fetch a stream in the most efficient way based on criteria and statistics. Optimzer returns a plan for the Query Engine to follow.
+Optimizer is responsible of applying optimization techniques in order to fetch a stream in the most efficient way based on criteria and statistics. Optimizer returns a plan for the Query Engine to follow.
 
 Example:
 
@@ -123,3 +123,8 @@ Using Hydro usually involves the following steps:
 4. Invoke Hydro locally or remotely as explained below.
 
 
+## Contributing
+We are accepting pull requests.
+
+In order to set-up a development environment, all you have to do is to clone this project and run `pip install -r requirements.txt`.
+We strongly recommend using virtualenv in order to avoid the dependencies pollute the system's Python installation.
