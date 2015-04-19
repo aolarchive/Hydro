@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 from pip.req import parse_requirements
 
 
-VERSION = '0.1.0'
+VERSION = '0.1.1'
 
 requirements = [str(ir.req) for ir in parse_requirements('requirements.txt')]
 
