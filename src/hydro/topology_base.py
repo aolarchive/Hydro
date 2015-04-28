@@ -6,7 +6,7 @@ from hydro.query_engine_factory import QueryEngineFactory
 from base_classes import Base
 from cache.in_memory import InMemoryCache
 from cache.mysql_cache import MySQLCache
-from hydro.common.utils import create_cache_key
+from hydro.common.utils import create_cache_key, get_directory_from_search_path
 import os
 import inspect
 from hydro.exceptions import HydroException
@@ -14,25 +14,17 @@ from hydro.common.configurator import Configurator
 
 
 class Topology(Base):
-    def __init__(self, cache_engine=Configurator.CACHE_ENGINE_IN_MEMORY, base_dir=None, cls=None, logger=None):
+    def __init__(self, cache_engine=Configurator.CACHE_ENGINE_IN_MEMORY, base_dir=None, logger=None):
         super(Topology, self).__init__()
 
         if logger:
             self.logger = logger
 
         # TODO: read the cache engines from the configuration and allow passing parameters if needed
-        #Toplogy is support self discovering of its needed modules but it can be supplied in init
-        if not base_dir:
-            base_dir = self.__module__
-        if not cls:
-            cls = self.__class__
-
+        #Toplogy supports self discovering of its needed modules but it can be supplied in init
+        directory_search_path = self._set_directory_variables(base_dir)
         self.cache_engines = {Configurator.CACHE_ENGINE_IN_MEMORY: InMemoryCache, Configurator.CACHE_ENGINE_MYSQL_CACHE: MySQLCache}
         self.transformers = Transformers()
-        self.base_dir = '.'.join(base_dir.split('.')[:-1])
-        self._modules_dir = self.base_dir
-        self._templates_dir = os.path.dirname(inspect.getabsfile(cls))
-
         cache_engine_params = None
         if type(cache_engine) == dict:
             cache_engine_name = cache_engine['cache_engine_name']
@@ -41,14 +33,25 @@ class Topology(Base):
             cache_engine_name = cache_engine
         cache_engine_class = self.cache_engines.get(cache_engine_name, InMemoryCache)
         self.cache_engine = cache_engine_class(cache_engine_params)
-
         self._execution_plan = ExecutionPlan()
         self.query_engine = QueryEngineFactory.get_query_engine(self._modules_dir, self.cache_engine, self._execution_plan, self.logger)
-        self.query_engine.set_templates_dir(self._templates_dir)
+        self.query_engine.set_templates_dir_path(directory_search_path)
         self.logger.debug("Topology {0} was instantiated, modules_dir: {1}, templates_dir: {2}".
                           format(type(self).__name__, self._modules_dir, self._templates_dir))
 
         self._topology_cache_ttl = Configurator.CACHE_DB_KEY_EXPIRE
+
+    def _set_directory_variables(self, base_dir):
+        directory_search_path = type(self).mro()
+        if not base_dir:
+            base_dir, self._templates_dir, found_dir = \
+                get_directory_from_search_path(directory_search_path, 'conf.py', Topology)
+        else:
+            # TODO: make this part work
+            self._templates_dir = os.path.dirname(inspect.getabsfile(self.__class__))
+        self.base_dir = '.'.join(base_dir.split('.')[:-1])
+        self._modules_dir = self.base_dir
+        return directory_search_path
 
     def _submit(self, params):
         raise HydroException('Not implemented')

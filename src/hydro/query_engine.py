@@ -2,7 +2,7 @@ __author__ = 'moshebasanchig'
 
 from importlib import import_module
 from base_classes import Base, HydroCommandTemplate
-from hydro.common.utils import create_cache_key
+from hydro.common.utils import create_cache_key, get_directory_from_search_path
 from copy import deepcopy
 
 
@@ -11,6 +11,7 @@ class QueryEngine(Base):
         # TODO: check for the existence of the dir and file and throw error otherwise
         self._modules_dir = modules_dir
         self._templates_dir = modules_dir
+        self._directory_search_path = None
         self._execution_plan = execution_plan
         self._conf = import_module('%s.conf' % self._modules_dir).conf
 
@@ -24,7 +25,9 @@ class QueryEngine(Base):
         self._logger = logger
 
     def _build_plan(self, logic_plan, params):
-        template = HydroCommandTemplate(self._templates_dir, logic_plan.template_file)
+        template_module, template_dir, found_dir = \
+            get_directory_from_search_path(self._directory_search_path, logic_plan.template_file, QueryEngine)
+        template = HydroCommandTemplate(template_dir, logic_plan.template_file)
         execution_plan = template.parse(params)
         return execution_plan
 
@@ -79,6 +82,9 @@ class QueryEngine(Base):
 
     def set_templates_dir(self, templates_dir):
         self._templates_dir = templates_dir
+
+    def set_templates_dir_path(self, directory_search_path):
+        self._directory_search_path = directory_search_path
 
     def set_topology_lookup_callback(self, callback_function):
         """
