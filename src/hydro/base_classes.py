@@ -95,7 +95,6 @@ class PlanObject(Base):
             else:
                 self.__dict__[key] = configuration_val
 
-
     @property
     def data_source(self):
         return self._data_source
@@ -129,7 +128,6 @@ class PlanObject(Base):
         self._sampling = value
 
 
-
 class OptimizerBase(Base):
     def __init__(self):
         self.logger = get_logger()
@@ -140,7 +138,6 @@ class OptimizerBase(Base):
         plan = PlanObject(params, source_id, Configurator.config_builder())
         # here comes the logic around the params
         return plan
-
 
 
 if __name__ == '__main__':
