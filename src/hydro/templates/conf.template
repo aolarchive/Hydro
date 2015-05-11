@@ -2,3 +2,9 @@ from hydro import Configurator
 
 conf = Configurator.config_builder()
 conf.OPTIMIZER = '{{ topology_name }}Optimizer'
+
+conf.CONNECTIONS = {
+    'static-sample': {
+        'source_type': 'static'
+    }
+}

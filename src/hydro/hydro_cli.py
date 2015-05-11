@@ -30,6 +30,7 @@ def scaffold(args):
     _create_file_from_template('%s/conf.template' % template_dir, '%s/conf.py' % dir_name, topology_name)
     _create_file_from_template('%s/optimizer.template' % template_dir, '%s/optimizer.py' % dir_name, topology_name)
     _create_file_from_template('%s/topology1.template' % template_dir, '%s/topology1.py' % dir_name, topology_name)
+    _create_file_from_template('%s/sample.template' % template_dir, '%s/sample.txt' % dir_name, topology_name)
 
 
 def listen(args):

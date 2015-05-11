@@ -55,7 +55,7 @@ class PlanObject(Base):
         self._data_source = None
         self._template_file = None
         self._source_type = None
-        plan_allowed_parameters = config.PLAN_ALLOWED_PARAMETERS
+        plan_allowed_parameters = getattr(config, 'PLAN_ALLOWED_PARAMETERS', {})
         if not set(params.keys()).issubset(set(plan_allowed_parameters.keys())):
             raise HydroException("Some parameters are not registered as valid in PLAN_ALLOWED_PARAMETERS")
         for key in params:

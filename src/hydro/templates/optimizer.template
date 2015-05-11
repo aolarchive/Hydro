@@ -1,8 +1,21 @@
 from hydro.base_classes import PlanObject
 from hydro.base_classes import OptimizerBase
-from hydro.exception import HydroException
+from hydro.base_classes import HydroException
 
 
 class {{ topology_name }}Optimizer(OptimizerBase):
+    def __init__(self):
+        self._plans = {
+            'sample_query': {'plan': self._get_sample_data}
+        }
+
     def get_plan(self, data_type, params, conf=None):
-        raise HydroException('not implemented')
+        if data_type not in self._plans.keys():
+            raise HydroException('Not Implemented: ' + data_type)
+        return self._plans[data_type]['plan'](data_type, params, conf)
+
+    def _get_sample_data(self, data_type, params, conf):
+        plan = PlanObject(params, data_type, conf)
+        plan.data_source = 'static-sample'
+        plan.template_file = 'sample.txt'
+        return plan
