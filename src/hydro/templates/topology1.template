@@ -6,4 +6,6 @@ class {{ topology_name }}Topology(Topology):  # TODO: rename this class and the 
         """
         topology consists of several steps, defining one source stream or more, combining and transformations
         """
-        pass
+        sample_stream = self.query_engine.get('sample_query', params)
+        # TODO: add some logic
+        return sample_stream
