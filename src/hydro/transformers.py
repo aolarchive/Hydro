@@ -8,7 +8,7 @@ class Transformers(Base):
     def __init__(self):
         self._execution_plan = None
 
-    def combine(self, stream1, stream2, left_on=None, right_on=None, how='inner'):
+    def combine(self, stream1, stream2, left_on=None, right_on=None, how='inner', suffixes=('_x', '_y')):
         """
         takes two input streams (pandas data frames) and joins them based on the keys dictionary
         """
@@ -16,7 +16,7 @@ class Transformers(Base):
             self._execution_plan.append('combine', 'transform')
 
         if left_on and right_on:
-            return pd.merge(stream1, stream2, left_on=left_on, right_on=right_on, how=how)
+            return pd.merge(stream1, stream2, left_on=left_on, right_on=right_on, how=how, suffixes=suffixes)
         else:
             return None
 
