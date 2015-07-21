@@ -11,7 +11,7 @@ import os
 import inspect
 from hydro.exceptions import HydroException
 from hydro.common.configurator import Configurator
-
+from hashlib import md5
 
 class Topology(Base):
     def __init__(self, cache_engine=Configurator.CACHE_ENGINE_IN_MEMORY, base_dir=None, cls=None, logger=None):
@@ -73,7 +73,9 @@ class Topology(Base):
 
 
     def submit(self, params):
-        cache_key = create_cache_key('topology_cache_key+'+self.__class__.__name__+str(params))
+        hash_value = md5()
+        hash_value.update(str(params))
+        cache_key = create_cache_key('topology_cache_key+' + self.__class__.__name__ + hash_value.digest())
         data = self.cache_engine.get(cache_key)
         hit = False if data is None else True
         self._execution_plan.add_phase(self, "submit", {'topology_cache_hit': hit})

@@ -4,7 +4,9 @@ import unittest
 import os
 import inspect
 from hydro.base_classes import HydroStr, HydroDatetime, Base, HydroCommandTemplate, HydroDatetime, HydroList,\
-    PlanObject, Configurator
+    PlanObject, Configurator, HydroDataframe
+from pandas import DataFrame as df
+import numpy as np
 from datetime import datetime
 os.environ['DJANGO_SETTINGS_MODULE'] = 'hydro.conf.settings'
 
@@ -68,6 +70,16 @@ class BaseClassesTest(unittest.TestCase):
         for stat in Configurator.OPTIMIZER_STATISTICS['ALL']:
             self.assertTrue(hasattr(inst, stat), "Base doesn't contain {0}".format(stat))
 
+    def test_hydro_Dataframe(self):
+
+        data = df({'a':[2,3],'b':[7,8]})
+        hdf = HydroDataframe(data).to_string()
+        expected_result = ',a,b\n0,2,7\n1,3,8\n'
+        self.assertEquals(hdf, expected_result)
+        # self.assertEquals(HydroStr('1').to_string(), '1')
+        # self.assertEquals(HydroStr(1).parse('a'), 'a')
+        # self.assertEquals(HydroStr(1).parse(1), '1')
+        # self.assertEquals(HydroStr(1).value, '1')
 
 
 

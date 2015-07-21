@@ -1,5 +1,7 @@
 from hydro.exceptions import HydroException
 from datetime import datetime
+from pandas import DataFrame
+from StringIO import StringIO
 
 __author__ = 'moshebasanchig'
 
@@ -58,3 +60,15 @@ class HydroList(HydroType):
 
     def to_string(self):
         return ', '.join("'{0}'".format(val) for val in self._value)
+
+class HydroDataframe(HydroType):
+    def parse(self, value, **kwargs):
+        if isinstance(value, DataFrame):
+            return value
+        else:
+            raise HydroException("Expected a Data Frame")
+
+    def to_string(self):
+        buffer = StringIO()
+        self._value.to_csv(buffer)
+        return buffer.getvalue()
