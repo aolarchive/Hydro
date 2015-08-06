@@ -12,7 +12,7 @@ class QueryEngineFactory(object):
     @classmethod
     def __get_conn_handler(cls):
         if cls.conn_handler is None:
-            conn_handler = ConnectorHandler()
+            cls.conn_handler = ConnectorHandler()
         return cls.conn_handler
 
     @classmethod
