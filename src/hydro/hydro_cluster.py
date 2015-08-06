@@ -20,7 +20,7 @@ class HydroBase(object):
         self._topologies = dict()
 
     def return_topology_callback_if_exist(self, topology):
-        if self._topologies.has_key(topology):
+        if topology in self._topologies:
             return self._topologies[topology].submit
         return None
 

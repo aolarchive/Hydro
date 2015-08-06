@@ -13,6 +13,7 @@ from hydro.exceptions import HydroException
 from hydro.common.configurator import Configurator
 from hashlib import md5
 
+
 class Topology(Base):
     def __init__(self, cache_engine=Configurator.CACHE_ENGINE_IN_MEMORY, base_dir=None, cls=None, logger=None):
         super(Topology, self).__init__()
@@ -62,7 +63,6 @@ class Topology(Base):
         """
         self._topology_cache_ttl = cache_ttl
 
-
     def topology_cache_ttl_callback(self, cache_ttl):
         """
         topology ttl should be equal to the minimum of its query cache ttl
@@ -70,7 +70,6 @@ class Topology(Base):
         if cache_ttl < self._topology_cache_ttl:
             self.logger.debug('Topology cache ttl was set to {0} seconds, by one of its query streams'.format(cache_ttl))
             self.set_topology_cache_ttl(cache_ttl)
-
 
     def submit(self, params):
         hash_value = md5()
