@@ -1,10 +1,5 @@
 # Hydro settings
-import os
-import logging.config
-import datetime
 
-DEBUG = logging.DEBUG
-LOGGER_LEVEL = DEBUG
 TIME_ZONE = 'UTC'
 LANGUAGE_CODE = 'en-us'
 APPLICATION_NAME = 'HYDRO'
