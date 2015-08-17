@@ -24,7 +24,8 @@ class MySQLCache(CacheBase):
         except Exception, err:
             if err.args[0] in (1146, 1049):  # 1146 - table doesn't exist, 1049 - unknown database?
                 cmd = createcachetable.Command().execute(cache_table,
-                                                         **{'database': cache_db})
+                                                         **{'database': cache_db,
+                                                            'verbosity': 2})
             else:
                 raise
 
