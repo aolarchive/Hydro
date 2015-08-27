@@ -1,10 +1,8 @@
 __author__ = 'moshebasanchig'
 
-from hydro.connectors.base_classes import DBBaseConnector
+from hydro.connectors.base_classes import DBBaseConnector, DSN
 import pyodbc
 from hydro.exceptions import HydroException
-
-DSN = 'dsn'
 
 
 class VerticaConnector(DBBaseConnector):
