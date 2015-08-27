@@ -1,6 +1,6 @@
 __author__ = 'moshebasanchig'
 
-from hydro.connectors.base_classes import DBBaseConnector, DSN
+from hydro.connectors.base_classes import DBBaseConnector, DSN, CONNECTION_STRING
 import pyodbc
 from hydro.exceptions import HydroException
 
@@ -14,6 +14,8 @@ class VerticaConnector(DBBaseConnector):
             conn_string = 'DSN=%s' % self._conf_defs['connection_string']
             self.logger.debug('Connect to {0}'.format(conn_string))
             self._conn = pyodbc.connect(conn_string)
+        elif self._conf_defs['connection_type'] == CONNECTION_STRING:
+            self._conn = pyodbc.connect(self._conf_defs['connection_string'])
         else:
             #TODO need to be implemented based on connection string
             raise HydroException("Vertica connection string connection is not implemented")

@@ -4,6 +4,7 @@ import pandas as pd
 from hydro.exceptions import HydroException
 
 DSN = 'dsn'
+CONNECTION_STRING = 'connection string'
 
 
 class ConnectorBase(object):
@@ -79,7 +80,7 @@ class DBBaseConnector(ConnectorBase):
         """
         Verifies if connection configuration is complete
         """
-        if self._conf_defs['connection_type'] == DSN:
+        if self._conf_defs['connection_type'] in [DSN, CONNECTION_STRING]:
             if not self._conf_defs['connection_string']:
                 raise HydroException('Connection dsn is Null')
         else:
