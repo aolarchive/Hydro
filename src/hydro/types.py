@@ -1,7 +1,6 @@
 from hydro.exceptions import HydroException
 from datetime import datetime
 from pandas import DataFrame
-from StringIO import StringIO
 
 __author__ = 'moshebasanchig'
 
@@ -69,6 +68,4 @@ class HydroDataframe(HydroType):
             raise HydroException("Expected a Data Frame")
 
     def to_string(self):
-        buffer = StringIO()
-        self._value.to_csv(buffer)
-        return buffer.getvalue()
+        return ', '.join(self._value.columns)
