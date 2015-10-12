@@ -45,14 +45,18 @@ class QueryEngine(Base):
         if run_topology:
             return run_topology(deepcopy(params))
         #if not topology then it's a query
+        self._logger.debug('QueryEngine getting the logical execution plan for {0}'.format(source_id))
         logic_plan = self.optimizer.get_plan(source_id, params, self._conf)
+        self._logger.debug('QueryEngine getting the physical execution plan for {0}'.format(source_id))
         plan = self._build_plan(logic_plan, params)
 
         # TODO: have some real logic for which plan to take. in the meanwhile, take the first
         conn_conf = self.connections.get(logic_plan.data_source)
+        self._logger.debug('QueryEngine acquiring connection for {0}'.format(logic_plan.data_source))
         connection = self.con_handler.get_connection(logic_plan.data_source, conn_conf)
 
         cache_key = self._get_cache_key(logic_plan.data_source, plan)
+        self._logger.debug('QueryEngine searching for key in cache: {0}'.format(cache_key))
         data = self.cache.get(cache_key)
         hit = False if data is None else True
         self._execution_plan.add_phase(self, logic_plan.data_source+'/'+logic_plan.template_file, {'query_cache_hit': hit})

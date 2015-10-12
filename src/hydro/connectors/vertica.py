@@ -13,9 +13,9 @@ class VerticaConnector(DBBaseConnector):
         if self._conf_defs['connection_type'] == DSN:
             conn_string = 'DSN=%s' % self._conf_defs['connection_string']
             self.logger.debug('Connect to {0}'.format(conn_string))
-            self._conn = pyodbc.connect(conn_string)
+            self._conn = pyodbc.connect(conn_string, unicode_results=True)
         elif self._conf_defs['connection_type'] == CONNECTION_STRING:
-            self._conn = pyodbc.connect(self._conf_defs['connection_string'])
+            self._conn = pyodbc.connect(self._conf_defs['connection_string'], unicode_results=True)
         else:
             #TODO need to be implemented based on connection string
             raise HydroException("Vertica connection string connection is not implemented")
