@@ -1,11 +1,14 @@
-__author__ = 'moshebasanchig'
-
 import unittest
-from hydro.cache.in_memory import InMemoryCache
+from django.conf import settings
+
+__author__ = 'moshebasanchig'
 
 
 class InMemoryCacheTest(unittest.TestCase):
     def setUp(self):
+        if not settings.configured:
+            settings.configure()
+        from hydro.cache.in_memory import InMemoryCache
         self.cache = InMemoryCache()
         self.cache.put('1', [1, 2, 3])
 

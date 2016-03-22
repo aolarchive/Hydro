@@ -7,7 +7,6 @@ from pandas import DataFrame as df
 from datetime import datetime
 
 __author__ = 'yanivshalev'
-os.environ['DJANGO_SETTINGS_MODULE'] = 'hydro.conf.settings'
 
 
 class BaseClassesTest(unittest.TestCase):
@@ -21,10 +20,10 @@ class BaseClassesTest(unittest.TestCase):
     # registration of the allowed parameters and their types
     conf = Configurator.config_builder()
     conf.PLAN_ALLOWED_PARAMETERS = {'CLIENT_ID': {'type': HydroStr},
-                               'FROM_DATE': {'type': HydroDatetime},
-                               'TO_DATE': {'type': HydroDatetime},
-                               'OBJECT_TYPES': {'type': HydroList, 'optional': True}
-                               }
+                                    'FROM_DATE': {'type': HydroDatetime},
+                                    'TO_DATE': {'type': HydroDatetime},
+                                    'OBJECT_TYPES': {'type': HydroList, 'optional': True}
+                                    }
 
     def test_hydro_str(self):
         self.assertEquals(HydroStr(1).to_string(), '1')
