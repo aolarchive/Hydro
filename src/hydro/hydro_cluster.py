@@ -1,8 +1,8 @@
-__author__ = 'moshebasanchig'
-
 from hydro.topology_base import Topology
 from hydro.exceptions import HydroException
 from copy import deepcopy
+
+__author__ = 'moshebasanchig'
 
 
 class ResultSet(object):

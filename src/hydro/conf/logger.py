@@ -1,9 +1,11 @@
+import os
+from settings import *
+
 __author__ = 'yanivshalev'
 """
 logging configuration with multi handlers definitions
 """
-import os
-from settings import *
+
 
 LOGGER_CONFIG = {
     "version": 1,
