@@ -1,7 +1,9 @@
-__author__ = 'yanivshalev'
 import logging
+import logging.config
 from hydro.conf.settings import APPLICATION_NAME
 from hydro.conf.logger import LOGGER_CONFIG
+
+__author__ = 'yanivshalev'
 
 
 class Logger:
