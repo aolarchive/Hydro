@@ -32,3 +32,14 @@ class Transformers(Base):
             return stream.groupby(group_by).agg(operators)
         else:
             return None
+
+    def concat(self, streams):
+        """
+        takes two input streams (pandas data frames) and concats them, assuming they have the same structure
+        :param streams: iterable of streams to concat
+        :return: a single stream
+        """
+        if self._execution_plan:
+            self._execution_plan.append('concat', 'transform')
+
+        return pd.concat(streams)
