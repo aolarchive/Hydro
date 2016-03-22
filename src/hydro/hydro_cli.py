@@ -1,10 +1,11 @@
-__author__ = 'moshebasanchig'
-
 import argparse
 import sys
 import os
 from django.template import Template, Context
 from django.conf import settings as django_settings
+import django
+
+__author__ = 'moshebasanchig'
 
 
 def _create_file_from_template(template_file_name, destination_file_name, topology_name):
@@ -20,7 +21,10 @@ def _create_file_from_template(template_file_name, destination_file_name, topolo
 def scaffold(args):
     dir_name = args.dir_name
     topology_name = args.topology_name
-    django_settings.configure()
+    if 'DJANGO_SETTINGS_MODULE' not in os.environ:
+            if not django_settings.configured:
+                django_settings.configure()
+                django.setup()
     if os.path.exists(dir_name):
         print 'directory already exists. skipping.'
         sys.exit(1)
