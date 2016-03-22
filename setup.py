@@ -5,7 +5,7 @@ from pip.req import parse_requirements
 import pip
 
 
-VERSION = '0.1.6'
+VERSION = '0.1.7'
 
 requirements = [str(ir.req) for ir in parse_requirements('requirements.txt', session=pip.download.PipSession())]
 

@@ -1,16 +1,14 @@
-__author__ = 'moshebasanchig'
-
-import os
-os.environ['DJANGO_SETTINGS_MODULE'] = 'hydro.conf.settings'
-from django.core.cache import get_cache
+from django.core.cache.backends.locmem import LocMemCache
 from base_classes import CacheBase
 from hydro.common.configurator import Configurator
+
+__author__ = 'moshebasanchig'
 
 
 class InMemoryCache(CacheBase):
 
     def __init__(self, params=None):
-        self.cache = get_cache('django.core.cache.backends.locmem.LocMemCache')
+        self.cache = LocMemCache(name='Hydro', params={})
 
     def get(self, key):
         try:
@@ -20,7 +18,7 @@ class InMemoryCache(CacheBase):
         return value
 
     def put(self, key, value, ttl=Configurator.CACHE_IN_MEMORY_KEY_EXPIRE):
-        #just in case the default was changed during the running
+        # just in case the default was changed during the running
         if ttl > Configurator.CACHE_IN_MEMORY_KEY_EXPIRE:
             ttl = Configurator.CACHE_IN_MEMORY_KEY_EXPIRE
 

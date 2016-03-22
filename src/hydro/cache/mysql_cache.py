@@ -1,10 +1,12 @@
-__author__ = 'moshebasanchig'
 from hydro.common.configurator import Configurator
 from base_classes import CacheBase
 from hydro.cache.in_memory import InMemoryCache
-from django.core.cache import get_cache
 from django.core.management.commands import createcachetable
 from pandas.core.frame import DataFrame
+from django.db.utils import DatabaseError
+from django.core.cache.backends.db import DatabaseCache
+
+__author__ = 'moshebasanchig'
 
 
 class MySQLCache(CacheBase):
@@ -16,9 +18,9 @@ class MySQLCache(CacheBase):
         cache_table = params.get('cache_table', Configurator.MYSQL_CACHE_TABLE)
         cache_db = params.get('cache_db', Configurator.MYSQL_CACHE_DB)
 
-        self.cache = get_cache('django.core.cache.backends.db.DatabaseCache',
-                               **{'LOCATION': cache_table, 'NAME': cache_db})
-        #creating a table if not exist
+        self.cache = DatabaseCache(cache_table, params={'NAME': cache_db})
+
+        # creating a table if not exist
         try:
             self.cache.get('a')
         except Exception, err:
@@ -34,8 +36,8 @@ class MySQLCache(CacheBase):
         value = self.in_mem.get(key)
         if not empty(value):
             value = self.cache.get(key)
-            #assuming that in case of db key expired, the worse case will be the additional of in memory expiration
-            #time
+            # assuming that in case of db key expired, the worse case will be the additional of in memory expiration
+            # time
             if not empty(value):
                 self.in_mem.put(key, value)
         return value
@@ -44,7 +46,12 @@ class MySQLCache(CacheBase):
         #just in case the default was changed during the running
         if ttl > Configurator.CACHE_DB_KEY_EXPIRE:
             ttl = Configurator.CACHE_DB_KEY_EXPIRE
-        self.cache.set(key, value, ttl)
+        try:
+            self.cache.set(key, value, ttl)
+        except DatabaseError as ex:
+            # e.g the stored value exceeds the max_packet_size (that should raise DatabaseError or OperationalError)
+            # TODO: log such cases
+            pass
         self.in_mem.put(key, value, min(Configurator.CACHE_IN_MEMORY_KEY_EXPIRE, ttl))
 
 if __name__ == '__main__':
