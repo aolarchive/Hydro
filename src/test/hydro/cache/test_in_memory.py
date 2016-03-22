@@ -8,6 +8,7 @@ class InMemoryCacheTest(unittest.TestCase):
     def setUp(self):
         if not settings.configured:
             settings.configure()
+        # importing in_memory only after django was initialized, otherwise it'll fail
         from hydro.cache.in_memory import InMemoryCache
         self.cache = InMemoryCache()
         self.cache.put('1', [1, 2, 3])

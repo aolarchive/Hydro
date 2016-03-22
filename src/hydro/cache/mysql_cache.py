@@ -50,7 +50,7 @@ class MySQLCache(CacheBase):
             self.cache.set(key, value, ttl)
         except DatabaseError as ex:
             # e.g the stored value exceeds the max_packet_size (that should raise DatabaseError or OperationalError)
-            # TODO: log such cases
+            self.logger.error('Failed adding an item to the cache: ' + ex)
             pass
         self.in_mem.put(key, value, min(Configurator.CACHE_IN_MEMORY_KEY_EXPIRE, ttl))
 

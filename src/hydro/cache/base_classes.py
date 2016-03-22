@@ -1,9 +1,10 @@
+from hydro.exceptions import HydroException
+from hydro.base_classes import Base
+
 __author__ = 'moshebasanchig'
 
-from hydro.exceptions import HydroException
 
-
-class CacheBase(object):
+class CacheBase(Base):
     """
     Any Cache engine need to implement the following methods
     """
