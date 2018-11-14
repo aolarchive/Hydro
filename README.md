@@ -1,3 +1,5 @@
+**Please note:** this project is no longer actively maintained.
+
 Hydro
 =====
 
